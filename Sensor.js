@@ -24,9 +24,7 @@ class Sensor{
         this.container.appendChild(this.div);
     }
 
-    //주인공의 좌표를 따라다녀야 한다..
-    move(x, y){
-        this.div.style.left=this.x+"px";
-        this.div.style.top=this.y+"px";                
+    hitTest(){
+        
     }
 }

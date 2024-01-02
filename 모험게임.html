@@ -8,27 +8,31 @@
     <script src="./map.js"></script>
     <script src="./GameObject.js"></script>
     <script src="./Brick.js"></script>
+    <script src="./Sensor.js"></script>
+    <script src="./LeftSensor.js"></script>
+    <script src="./RightSensor.js"></script>
+    <script src="./UpSensor.js"></script>
+    <script src="./DownSensor.js"></script>
     <script src="./Hero.js"></script>
     <script src="../lib/common.js"></script>
-    <script src="./Sensor.js"></script>
     <script>
         let wrapper;
         let brick_width=40; //블럭 한개당 너비 
         let brick_height=40;//블럭 한개당 높이 
-        let col_count=35; //x축 방향으로 몇개 만들지 (열)
-        let row_count=30; //y축 방향으로 몇개 만들지(행)
+        let col_count=25; //x축 방향으로 몇개 만들지 (열)
+        let row_count=15; //y축 방향으로 몇개 만들지(행)
         let hero;
         let brickArray=[]; //생성되는 모든~~ 벽돌을 담게 될 배열
 
         function createBrick(x, y){
-            console.log(x, y);
+            
             //container, src, x, y, width, height, velX, velY
             let brick=new Brick(wrapper,"../images/brick.png", x*brick_width, y*brick_height, brick_width, brick_height,0,0);
             brickArray.push(brick); //배열에 벽돌 추가
         }
 
         function createHero(x, y){
-            hero=new Hero(wrapper,"../images/mario.png", x*40, y*40, 60, 60, 0 , 0);
+            hero=new Hero(wrapper,"../images/mario.png", x*40, y*40, 60, 60, 0 , 0);            
         }
 
         function createMap(){
@@ -72,10 +76,10 @@
             //키보드 이벤트 연결 
             document.body.addEventListener("keydown", function(e){
                switch(e.keyCode){
-                    case 37: hero.velX=-4;break; //left
-                    case 39: hero.velX=4;break; //right
-                    case 38: hero.velY=-4;break; //up
-                    case 40: hero.velY=4;break; //down
+                    case 37: hero.velX=-2;break; //left
+                    case 39: hero.velX=2;break; //right
+                    case 38: hero.velY=-2;break; //up
+                    case 40: hero.velY=2;break; //down
                } 
             });
 
