@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="./map.js"></script>
+    <script src="./GameObject.js"></script>
+    <script src="./Brick.js"></script>
+    <script src="./Hero.js"></script>
+    <script src="../lib/common.js"></script>
+    <script src="./Sensor.js"></script>
+    <script>
+        let wrapper;
+        let brick_width=40; //블럭 한개당 너비 
+        let brick_height=40;//블럭 한개당 높이 
+        let col_count=35; //x축 방향으로 몇개 만들지 (열)
+        let row_count=30; //y축 방향으로 몇개 만들지(행)
+        let hero;
+        let brickArray=[]; //생성되는 모든~~ 벽돌을 담게 될 배열
+
+        function createBrick(x, y){
+            console.log(x, y);
+            //container, src, x, y, width, height, velX, velY
+            let brick=new Brick(wrapper,"../images/brick.png", x*brick_width, y*brick_height, brick_width, brick_height,0,0);
+            brickArray.push(brick); //배열에 벽돌 추가
+        }
+
+        function createHero(x, y){
+            hero=new Hero(wrapper,"../images/mario.png", x*40, y*40, 60, 60, 0 , 0);
+        }
+
+        function createMap(){
+            for(let i=0;i<stage[0].length;i++){ //층
+                for(let a=0;a<stage[0][i].length;a++){ //호
+                    //1번인 경우 벽돌로 대체 
+                    let n=stage[0][i][a];
+                    
+                    switch(n){
+                        case 1: createBrick(a, i);break; /*벽돌*/
+                        case 2: createHero(a, i);break; /*주인공*/
+                        case 3: createMashroom();break; /*버섯*/
+                        case 4: createStar();break; /*별*/
+                        case 5: createEnemy();break; /*적군*/
+                    }
+                }
+            }
+        }
+        
+        function gameLoop(){
+            hero.move();
+        }
+
+        function init(){
+            wrapper = document.getElementById("wrapper");
+
+            $("#wrapper").css({
+                width:(brick_width*col_count)+"px",
+                height:(brick_height*row_count)+"px",
+                background:"yellow",
+                margin:"auto",
+                position:"relative"
+            });
+        }
+
+        $(function(){
+            //wrapper 초기화 
+            init();
+            createMap();
+            
+            //키보드 이벤트 연결 
+            document.body.addEventListener("keydown", function(e){
+               switch(e.keyCode){
+                    case 37: hero.velX=-4;break; //left
+                    case 39: hero.velX=4;break; //right
+                    case 38: hero.velY=-4;break; //up
+                    case 40: hero.velY=4;break; //down
+               } 
+            });
+
+            document.body.addEventListener("keyup", function(e){
+               switch(e.keyCode){
+                    case 37: hero.velX=0;break; //left
+                    case 39: hero.velX=0;break; //right
+                    case 38: hero.velY=0;break; //up
+                    case 40: hero.velY=0;break; //down
+               } 
+            });
+
+            setInterval("gameLoop()", 10);
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper"></div>
+</body>
+</html>
