@@ -15,6 +15,7 @@
     <script src="./RightSensor.js"></script>
     <script src="./DownSensor.js"></script>
     <script src="./UpSensor.js"></script>
+    <script src="./Enemy.js"></script>
     <script>
         let wrapper;
         let brick_width=40; //블럭 한개당 너비 
@@ -23,6 +24,8 @@
         let row_count=30; //y축 방향으로 몇개 만들지(행)
         let hero;
         let brickArray=[]; //생성되는 모든~~ 벽돌을 담게 될 배열
+        let flag=true; //게임 루프 실행 여부를 결정짓는 논리값
+        let enemyArray=[]; //적군들을 담을 배열 
 
         function createBrick(x, y){
             console.log(x, y);
@@ -32,7 +35,14 @@
         }
 
         function createHero(x, y){
-            hero=new Hero(wrapper,"../images/mario.png", x*40, y*40, 60, 60, 0 , 0);
+            hero=new Hero(wrapper,"../images/mario.png", x*40, y*40, 60, 60, 0, 0);
+        }
+
+        function createEnemy(x, y){
+            /*
+            let enemy=new Enemy(wrapper,"../images/firefly.png", x*40, y*40, 40, 40, -1, 0);
+            enemyArray.push(enemy);
+            */
         }
 
         function createMap(){
@@ -46,15 +56,21 @@
                         case 2: createHero(a, i);break; /*주인공*/
                         case 3: createMashroom();break; /*버섯*/
                         case 4: createStar();break; /*별*/
-                        case 5: createEnemy();break; /*적군*/
+                        case 5: createEnemy(a, i);break; /*적군*/
                     }
                 }
             }
         }
         
         function gameLoop(){
-            hero.move();
-            
+            if(flag){
+                hero.move();
+
+                //생성된 적군의 .move();
+                for(let i=0;i<enemyArray.length;i++){
+                    enemyArray[i].move();
+                }
+            }            
         }
 
         function init(){
@@ -81,6 +97,7 @@
                     case 39: hero.velX=4;break; //right
                     case 38: hero.velY=-4;break; //up
                     case 40: hero.velY=4;break; //down
+                    case 27: flag=!flag;break; //pause, restart 전환
                } 
             });
 
